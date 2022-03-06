@@ -27,6 +27,7 @@
     If you have any questions, please do not hesitate to ask.
 -->
 <html lang="en">
+
 <head>
     <title>Rustici Software - Initial Developer Hiring Test</title>
     <style>
@@ -35,13 +36,16 @@
             font-size: 14px;
             line-height: 20px;
         }
+
         li.question {
             padding-top: 5px;
             padding-bottom: 5px;
         }
+
         label.choice {
             display: block;
         }
+
         .correct {
             color: #336897;
             font-weight: bold;
@@ -59,11 +63,32 @@
             // `randomizeTest` accepts and returns a `Test` object. The questions in the returned object should
             // be in a random order. The order of the choices within each question should also be randomized.
             //
-            function randomizeTest (test) {
+            function randomizeTest(test) {
+                let questionArray = test.questions;
+                let currentIndex = questionArray.length; 
+                let randomIndex = 0;
+                
+                // While there remain elements to shuffle...
+                while (currentIndex != 0) {
+                    
+                    // Pick a remaining element...
+                    randomIndex = Math.floor(Math.random() * currentIndex);
+                    questionArray = test.questions;
+                    
+                    // And swap it with the current element.
+                    const currentQuestion = questionArray[currentIndex];
+                    const randomQuestion = questionArray[randomIndex];
+                    const newSetOfQuestions = [...questionArray]
+                    newSetOfQuestions[randomIndex] = currentQuestion;
+                    newSetOfQuestions[currentIndex] = randomQuestion;
+                    currentIndex -= 1;
+                    test.questions = newSetOfQuestions;
+                }
+                
                 return test;
             }
 
-            function Test (questions, choices, answers) {
+            function Test(questions, choices, answers) {
                 this.questions = questions;
                 this.choices = choices;
                 this.answers = answers;
@@ -72,7 +97,7 @@
             //
             // displays the sample test in the browser with the correct answer highlighted
             //
-            function renderTest (test, parent) {
+            function renderTest(test, parent) {
                 const randomizedTest = randomizeTest(test);
 
                 for (let i = 0; i < randomizedTest.questions.length; i += 1) {
@@ -115,12 +140,12 @@
             }
 
             const questions = [
-                    "What can you find in Rustici Software's office?",
-                    "All of Rustici Software employees are expected to work no more than ____ hours per week.",
-                    "The end users of Rustici Software's products number in the _________",
-                    "Rustici Software is a (choose all that apply):",
-                    "Tim likes to wear:"
-                ],
+                "What can you find in Rustici Software's office?",
+                "All of Rustici Software employees are expected to work no more than ____ hours per week.",
+                "The end users of Rustici Software's products number in the _________",
+                "Rustici Software is a (choose all that apply):",
+                "Tim likes to wear:"
+            ],
                 choices = [
                     [
                         "Dart Board",
@@ -167,4 +192,5 @@
         }());
     </script>
 </body>
+
 </html>
