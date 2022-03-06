@@ -24,6 +24,11 @@ function randomizeTest(test) {
     return test;
 }
 
+const randomizeAnswers = () =>
+{
+
+}
+
 function Test(questions, choices, answers) {
     this.questions = questions;
     this.choices = choices;
