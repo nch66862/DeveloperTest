@@ -1,7 +1,7 @@
 function randomizeTest(test) {
     console.log("hey it started");
-    let questionArray = test.questions;
-    let currentIndex = questionArray.length;
+    let questionArray;
+    let currentIndex = questionArray.length - 1;
     let randomIndex = 0;
 
     // While there remain elements to shuffle...
