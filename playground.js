@@ -1,32 +1,59 @@
 function randomizeTest(test) {
     console.log("hey it started");
-    let questionArray;
-    let currentIndex = questionArray.length - 1;
-    let randomIndex = 0;
+    let currentIndex = test.questions.length;
+    let randomIndex;
+    let currentQuestion;
+    let currentChoices;
+    let currentAnswers;
+    const questions = test.questions;
+    const choices = test.choices;
+    const answers = test.answers;
 
-    // While there remain elements to shuffle...
-    while (currentIndex != 0) {
 
-        // Pick a remaining element...
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        questionArray = test.questions;
+    // While there remain elements to shuffle…
+    while (currentIndex) {
+
+        // Pick a remaining element…
+        randomIndex = Math.floor(Math.random() * currentIndex--);
 
         // And swap it with the current element.
-        const currentQuestion = questionArray[currentIndex];
-        const randomQuestion = questionArray[randomIndex];
-        const newSetOfQuestions = [...questionArray]
-        newSetOfQuestions[randomIndex] = currentQuestion;
-        newSetOfQuestions[currentIndex] = randomQuestion;
-        currentIndex -= 1;
-        test.questions = newSetOfQuestions;
+        currentQuestion = questions[currentIndex];
+        questions[currentIndex] = questions[randomIndex];
+        questions[randomIndex] = currentQuestion;
+
+        currentChoices = choices[currentIndex];
+        choices[currentIndex] = choices[randomIndex];
+        choices[randomIndex] = currentChoices;
+
+        currentAnswers = answers[currentIndex];
+        answers[currentIndex] = answers[randomIndex];
+        answers[randomIndex] = currentAnswers;
+
+        randomizeAnswers(currentChoices, currentAnswers);
     }
 
     return test;
 }
 
-const randomizeAnswers = () =>
-{
+const randomizeAnswers = (currentChoices, currentAnswers) => {
+    let currentIndex = currentChoices.length;
+    let randomIndex;
+    let currentChoice;
+    let currentAnswer;
 
+    while (currentIndex) {
+        // Pick a remaining element…
+        randomIndex = Math.floor(Math.random() * currentIndex--);
+
+        // And swap it with the current element.
+        currentChoice = currentChoices[currentIndex];
+        currentChoices[currentIndex] = currentChoices[randomIndex];
+        currentChoices[randomIndex] = currentChoice;
+
+        currentAnswer = currentAnswers[currentIndex];
+        currentAnswers[currentIndex] = currentAnswers[randomIndex];
+        currentAnswers[randomIndex] = currentAnswer;
+    }
 }
 
 function Test(questions, choices, answers) {
