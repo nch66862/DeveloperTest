@@ -63,23 +63,18 @@
             /// `randomizeTest` accepts and returns a `Test` object. The questions in the returned object should
             /// be in a random order. The order of the choices within each question should also be randomized.
             /// </summary>
+            /// <para>
+            /// The following process will randomly shuffle the array by starting at the last element,
+            /// swapping it with another element between itself and the fist element, then repeating the process
+            /// with the second to last element in the array, then the third to last, etc. until the entire array 
+            /// has been randomly shuffled. This avoids having to create a new array and avoids removing elements 
+            /// from the middle of an array, avoiding the need to shift elements down when an index has been removed.
+            /// </para>
             function randomizeTest(test) {
                 // Start at the last index in the array
                 let currentIndex = test.questions.length;
                 let randomIndex;
-                let currentQuestion;
-                let currentChoices;
-                let currentAnswers;
-                const questions = test.questions;
-                const choices = test.choices;
-                const answers = test.answers;
 
-
-                // The following process will randomly shuffle the array by starting at the last element,
-                // swapping it with another element between itself and the fist element, then repeating the process
-                // with the second to last element in the array, then the third to last, etc. until the entire array 
-                // has been randomly shuffled. This avoids having to create a new array and avoids removing elements 
-                // from the middle of an array, avoiding the need to shift elements down when an index has been removed.
 
                 // While there remain elements to shuffle...
                 while (currentIndex) {
@@ -88,27 +83,16 @@
                     // index that is being swapped.
                     randomIndex = Math.floor(Math.random() * currentIndex--);
 
-                    // Capture the current element.
-                    currentQuestion = questions[currentIndex];
-                    // Overwrite the current element's index with a random index between the current index and 
-                    // the beginning of the array.
-                    questions[currentIndex] = questions[randomIndex];
-                    // Write the copied current element to the random index. These elements have now switched places.
-                    questions[randomIndex] = currentQuestion;
+                    swapIndices(test.questions, currentIndex, randomIndex);
 
                     // Repeat this process for the choices and the answers, keeping the same random index as the 
                     // questions so that the choices and answers stay matched with the question.
-                    currentChoices = choices[currentIndex];
-                    choices[currentIndex] = choices[randomIndex];
-                    choices[randomIndex] = currentChoices;
-
-                    currentAnswers = answers[currentIndex];
-                    answers[currentIndex] = answers[randomIndex];
-                    answers[randomIndex] = currentAnswers;
+                    swapIndices(test.choices, currentIndex, randomIndex);
+                    swapIndices(test.answers, currentIndex, randomIndex);
 
                     // The algorithm will no longer touch the current index, so the same shuffling process will
-                    // be performed on the choices and the answers.
-                    randomizeAnswers(choices[currentIndex], answers[currentIndex]);
+                    // be performed on the choices and the answers before leaving.
+                    randomizeAnswers(test.choices[currentIndex], test.answers[currentIndex]);
                 }
 
                 return test;
@@ -117,19 +101,12 @@
             const randomizeAnswers = (currentChoices, currentAnswers) => {
                 let currentIndex = currentChoices.length;
                 let randomIndex;
-                let currentChoice;
-                let currentAnswer;
 
                 while (currentIndex) {
                     randomIndex = Math.floor(Math.random() * currentIndex--);
 
-                    currentChoice = currentChoices[currentIndex];
-                    currentChoices[currentIndex] = currentChoices[randomIndex];
-                    currentChoices[randomIndex] = currentChoice;
-
-                    currentAnswer = currentAnswers[currentIndex];
-                    currentAnswers[currentIndex] = currentAnswers[randomIndex];
-                    currentAnswers[randomIndex] = currentAnswer;
+                    swapIndices(currentChoices, currentIndex, randomIndex);
+                    swapIndices(currentAnswers, currentIndex, randomIndex);
                 }
             }
 
@@ -141,7 +118,7 @@
                 // Overwrite the current element's index with a random index between the current index and 
                 // the beginning of the array.
                 dataArray[currentIndex] = dataArray[randomIndex];
-                
+
                 // Write the copied current element to the random index. These elements have now switched places.
                 dataArray[randomIndex] = currentElement;
             }
