@@ -29,6 +29,8 @@ function randomizeTest(test) {
         answers[currentIndex] = answers[randomIndex];
         answers[randomIndex] = currentAnswers;
 
+        //I think because things are switching around, it would be best to randomize first? Or a different index?
+
         randomizeAnswers(currentChoices, currentAnswers);
     }
 
