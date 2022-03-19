@@ -59,30 +59,28 @@
 
     <script>
         (function () {
-            /// <summary>
-            /// `randomizeTest` accepts and returns a `Test` object. The questions in the returned object should
-            /// be in a random order. The order of the choices within each question should also be randomized.
-            /// </summary>
             /// <para>
-            /// The following process will randomly shuffle the array by starting at the last element,
+            /// The randomizeTest function will randomly shuffle the array by starting at the last element,
             /// swapping it with another element between itself and the fist element, then repeating the process
             /// with the second to last element in the array, then the third to last, etc. until the entire array 
-            /// has been randomly shuffled. This avoids having to create a new array and avoids removing elements 
-            /// from the middle of an array, avoiding the need to shift elements down when an index has been removed.
+            /// has been randomly shuffled. 
+            /// This process avoids performance issues other shuffling algorithms have in 
+            /// 1. creating a new array and 
+            /// 2. removing elements from the middle of an array, providing the need to shift elements down when an index has been removed.
             /// </para>
             function randomizeTest(test) {
                 // Start at the last index in the array
                 let currentIndex = test.questions.length;
                 let randomIndex;
 
-
-                // While there remain elements to shuffle...
+                // While there remain elements to shuffle in the array
                 while (currentIndex) {
 
-                    // Pick a random element between the first element and the current element. Decrement the
-                    // index that is being swapped.
+                    // Pick a random element between the first element and the current element. 
+                    // Decrement the index that is being swapped, moving one index towards the beginning of the array.
                     randomIndex = Math.floor(Math.random() * currentIndex--);
-
+                    
+                    // Swap the current index the random index.
                     swapIndices(test.questions, currentIndex, randomIndex);
 
                     // Repeat this process for the choices and the answers, keeping the same random index as the 
@@ -119,7 +117,7 @@
                 // the beginning of the array.
                 dataArray[currentIndex] = dataArray[randomIndex];
 
-                // Write the copied current element to the random index. These elements have now switched places.
+                // Write the copied current element to the random index. This last step completes the elements switching places.
                 dataArray[randomIndex] = currentElement;
             }
 
