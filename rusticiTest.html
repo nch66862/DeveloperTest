@@ -27,6 +27,7 @@
     If you have any questions, please do not hesitate to ask.
 -->
 <html lang="en">
+
 <head>
     <title>Rustici Software - Initial Developer Hiring Test</title>
     <style>
@@ -35,13 +36,16 @@
             font-size: 14px;
             line-height: 20px;
         }
+
         li.question {
             padding-top: 5px;
             padding-bottom: 5px;
         }
+
         label.choice {
             display: block;
         }
+
         .correct {
             color: #336897;
             font-weight: bold;
@@ -55,17 +59,69 @@
 
     <script>
         (function () {
-            //
-            // `randomizeTest` accepts and returns a `Test` object. The questions in the returned object should
-            // be in a random order. The order of the choices within each question should also be randomized.
-            //
-            function randomizeTest (test) {
-                //
-                // Your code to randomize questions and answers goes here
-                //
+            /// <para>
+            /// The randomizeTest function will randomly shuffle the array by starting at the last element,
+            /// swapping it with another element between itself and the fist element, then repeating the process
+            /// with the second to last element in the array, then the third to last, etc. until the entire array 
+            /// has been randomly shuffled. 
+            /// This process avoids performance issues other shuffling algorithms have in 
+            /// 1. creating a new array and 
+            /// 2. removing elements from the middle of an array, providing the need to shift elements down when an index has been removed.
+            /// </para>
+            function randomizeTest(test) {
+                // Start at the last index in the array
+                let currentIndex = test.questions.length;
+                let randomIndex;
+
+                // While there remain elements to shuffle in the array
+                while (currentIndex) {
+
+                    // Pick a random element between the first element and the current element. 
+                    // Decrement the index that is being swapped, moving one index towards the beginning of the array.
+                    randomIndex = Math.floor(Math.random() * currentIndex--);
+                    
+                    // Swap the current index the random index.
+                    swapIndices(test.questions, currentIndex, randomIndex);
+
+                    // Repeat this process for the choices and the answers, keeping the same random index as the 
+                    // questions so that the choices and answers stay matched with the question.
+                    swapIndices(test.choices, currentIndex, randomIndex);
+                    swapIndices(test.answers, currentIndex, randomIndex);
+
+                    // The algorithm will no longer touch the current index, so the same shuffling process will
+                    // be performed on the choices and the answers before leaving.
+                    randomizeAnswers(test.choices[currentIndex], test.answers[currentIndex]);
+                }
+
+                return test;
             }
 
-            function Test (questions, choices, answers) {
+            const randomizeAnswers = (currentChoices, currentAnswers) => {
+                let currentIndex = currentChoices.length;
+                let randomIndex;
+
+                while (currentIndex) {
+                    randomIndex = Math.floor(Math.random() * currentIndex--);
+
+                    swapIndices(currentChoices, currentIndex, randomIndex);
+                    swapIndices(currentAnswers, currentIndex, randomIndex);
+                }
+            }
+
+            const swapIndices = (dataArray, currentIndex, randomIndex) => {
+
+                // Capture the current element.
+                const currentElement = dataArray[currentIndex];
+
+                // Overwrite the current element's index with a random index between the current index and 
+                // the beginning of the array.
+                dataArray[currentIndex] = dataArray[randomIndex];
+
+                // Write the copied current element to the random index. This last step completes the elements switching places.
+                dataArray[randomIndex] = currentElement;
+            }
+
+            function Test(questions, choices, answers) {
                 this.questions = questions;
                 this.choices = choices;
                 this.answers = answers;
@@ -74,7 +130,7 @@
             //
             // displays the sample test in the browser with the correct answer highlighted
             //
-            function renderTest (test, parent) {
+            function renderTest(test, parent) {
                 const randomizedTest = randomizeTest(test);
 
                 for (let i = 0; i < randomizedTest.questions.length; i += 1) {
@@ -117,12 +173,12 @@
             }
 
             const questions = [
-                    "What can you find in Rustici Software's office?",
-                    "All of Rustici Software employees are expected to work no more than ____ hours per week.",
-                    "The end users of Rustici Software's products number in the _________",
-                    "Rustici Software is a (choose all that apply):",
-                    "Tim likes to wear:"
-                ],
+                "What can you find in Rustici Software's office?",
+                "All of Rustici Software employees are expected to work no more than ____ hours per week.",
+                "The end users of Rustici Software's products number in the _________",
+                "Rustici Software is a (choose all that apply):",
+                "Tim likes to wear:"
+            ],
                 choices = [
                     [
                         "Dart Board",
@@ -169,4 +225,5 @@
         }());
     </script>
 </body>
+
 </html>
